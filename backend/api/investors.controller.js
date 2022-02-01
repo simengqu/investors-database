@@ -5,15 +5,50 @@ export default class InvestorsController {
         const investorsPerPage = req.query.investorsPerPage ? parseInt(req.query.investorsPerPage, 10) : 20
         const page = req.query.page ? parseInt(req.query.page, 10) : 0
 
+        // let filters = {}
+        // if (req.query.type) {
+        //     filters.type = req.query.type
+        // } else if (req.query.industry) {
+        //     filters.industry = req.query.industry
+        // } else if (req.query.investmentSize) {
+        //     filters.investmentSize = req.query.investmentSize
+        // } else if (req.query.location) {
+        //     filters.location = req.query.location
+        // }
+
+        console.log(req.query)
         let filters = {}
         if (req.query.type) {
-            filters.type = req.query.type
-        } else if (req.query.industry) {
-            filters.industry = req.query.industry
-        } else if (req.query.investmentSize) {
-            filters.investmentSize = req.query.investmentSize
-        } else if (req.query.location) {
-            filters.location = req.query.location
+            if (req.query.type != "All Types") {
+                filters.type = req.query.type
+            } else {
+                filters.type = {$regex: ""}
+            }
+        } else {
+            filters.type = {$regex: ""}
+        }
+        if (req.query.industry) {
+            if (req.query.industry != "All Industries") {
+                filters.industry = req.query.industry
+            } else {
+                filters.industry = {$regex: ""}
+            }
+        } else {
+            filters.industry = {$regex: ""}
+        }
+        // if (req.query.investmentSize != "All Investment Sizes") {
+        //     filters.investmentSize = req.query.investmentSize
+        // } else {
+        //     filters.investmentSize = {$regex: ""}
+        // }
+        if (req.query.location) {
+            if (req.query.location != "All Locations") {
+                filters.location = req.query.location
+            } else {
+                filters.location = {$regex: ""}
+            }
+        } else {
+            filters.location = {$regex: ""}
         }
 
         const { investorsList, totalNumInvestors } = await InvestorsDAO.getInvestors({
