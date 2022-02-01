@@ -7,6 +7,12 @@ export default class InvestorsDAO {
         }
         try {
             investors = await conn.db(process.env.INVESTORS_NS).collection("investors")
+            // investors.updateMany(
+            //     // {'HQ': {$exists: false}},
+            //     // {$set: {'HQ': ''}}
+            //     {'HQ': ''},
+            //     {$unset: {'HQ': ''}}
+            // )
         } catch (e) {
             console.error(
                 `Unable to establish a collection handle in investorsDAO: ${e}`,
@@ -20,18 +26,47 @@ export default class InvestorsDAO {
         investorsPerPage = 20,
     } = {}) {
         let query
+        // let filtersLocation
+        // let filtersInudstry
+        // let filtersInvestment
+        // if (filters["location"] == { '$regex': '' }) {
+        //     filtersLocation = "Firm"
+        // } else {
+        //     filtersLocation = "HQ"
+        // }
+        // if (filters["industry"] == {$regex: ""}) {
+        //     filtersInudstry = "Firm"
+        // } else {
+        //     filtersInudstry = "Preferred Sectors"
+        // }
+        // if (filters["investmentSize"] == {$regex: ""}) {
+        //     filtersInvestment = "Firm"
+        // } else {
+        //     filtersInvestment = "Preferred Investment Size"
+        // }
         if (filters) {
-            if ("type" in filters) {
-                query = { "Type": { $eq: filters["type"]} }
-            } else if ("industry" in filters) {
-                query = { "Preferred Sectors": {$eq: filters["industry"]}}
-            } else if ("investmentSize" in filters) {
-                query = { "Preferred Investment Size": {$eq: filters["investmentSize"]}}
-            } else if ("location" in filters) {
-                query = { "HQ": {$eq: filters["location"]}}
+            query = {
+                "Type": filters["type"],
+                "Preferred Sectors": filters["industry"],
+                // "Preferred Investment Size": filters["investmentSize"],
+                "HQ": filters["location"]
             }
-        }   
 
+            
+            // console.log(query)
+            // if ("type" in filters) {
+            //     query = { "Type": { $eq: filters["type"]} }
+            // } else if ("industry" in filters) {
+            //     query = { "Preferred Sectors": {$eq: filters["industry"]}}
+            // } else if ("investmentSize" in filters) {
+            //     query = { "Preferred Investment Size": {$eq: filters["investmentSize"]}}
+            // } else if ("location" in filters) {
+            //     query = { "HQ": {$eq: filters["location"]}}
+            // }
+        }   
+        console.log(query)
+        // console.log(filters["location"])
+        // console.log(filtersLocation)
         let cursor
 
         try {
