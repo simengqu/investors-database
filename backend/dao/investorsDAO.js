@@ -38,6 +38,7 @@ export default class InvestorsDAO {
         investorsPerPage = 20,
     } = {}) {
         let query
+        
         // let filtersLocation
         // let filtersInudstry
         // let filtersInvestment
