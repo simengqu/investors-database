@@ -6,7 +6,7 @@ import InvestorsList from "./components/investors-list";
 import Example from "./components/Example";
 
 function App() {
-  const [modalOpen, setModalOpen] = useState(false);
+  // const [modalOpen, setModalOpen] = useState(false);
   // const investors = InvestorsList.investors;
 
   return (

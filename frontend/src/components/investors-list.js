@@ -194,14 +194,19 @@ function InvestorsList () {
     const findByMultiple = (query, by) => {
         query = [searchType, searchLocation, searchIndustry]
         by = ["type", "location", "industry"]
-        InvestorDataService.findMultiple(query, by)
-        .then(response => {
-            console.log(response.data);
-            setInvestors(response.data.investors);
-        })
-        .catch(e => {
-            console.log(e);
-        });
+        if (searchType == "All Types" && searchLocation == "All Locations" && searchIndustry == "All Industries") {
+            refreshList();
+        } else {
+            InvestorDataService.findMultiple(query, by)
+            .then(response => {
+                console.log(response.data);
+                setInvestors(response.data.investors);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+        }
+        
         console.log(searchLocation)
         // findMultiple([searchType, searchLocation, searchIndustry], 
         //         ["type", "location", "industry"])
@@ -241,8 +246,8 @@ function InvestorsList () {
                 {/* Investor Name: {investor.Firm}<br/> */}
               </div>
               <div className="body">
-                  Company name: {investorFirm}
-                  Title: {investorTitle}
+                  Company name: {investorFirm}{"\n"}
+                  Title: {investorTitle}{"\n"}
                   Type: {investorType}{"\n"}
                   Location: {investorLocation}{"\n"}
                   Description: {investorDescription}{"\n"}

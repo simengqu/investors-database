@@ -13,6 +13,18 @@ export default class InvestorsDAO {
             //     {'HQ': ''},
             //     {$unset: {'HQ': ''}}
             // )
+            // investors.updateMany(
+            //     // {'Preferred Sectors': {$exists: false}},
+            //     // {$set: {'Preferred Sectors': ''}}
+            //     {'Preferred Sectors': ''},
+            //     {$unset: {'Preferred Sectors': ''}}
+            // )
+            // investors.updateMany(
+            //     {'HQ': {$exists: false}},
+            //     {$set: {'HQ': ''}}
+            //     // {'HQ': ''},
+            //     // {$unset: {'HQ': ''}}
+            // )
         } catch (e) {
             console.error(
                 `Unable to establish a collection handle in investorsDAO: ${e}`,
@@ -64,7 +76,7 @@ export default class InvestorsDAO {
             //     query = { "HQ": {$eq: filters["location"]}}
             // }
         }   
-        console.log(query)
+        console.log(filters)
         // console.log(filters["location"])
         // console.log(filtersLocation)
         let cursor

@@ -14,7 +14,7 @@ class InvestorDataService {
       return http.get(`?${by}=${query}&page=${page}`);
     } 
 
-    findMultiple(query, by = "type", page = 0) {
+    findMultiple(query, by, page = 0) {
       return http.get(`?${by[0]}=${query[0]}&${by[1]}=${query[1]}&${by[2]}=${query[2]}&page=${page}`);
     } 
     
