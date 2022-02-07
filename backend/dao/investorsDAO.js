@@ -8,6 +8,23 @@ export default class InvestorsDAO {
         try {
             investors = await conn.db(process.env.INVESTORS_NS).collection("investors")
             // investors.updateMany(
+            //     { },
+            //     [
+            //     {
+            //       '$addFields': {
+            //         'Investment Size Min Double': {
+            //           '$toDouble': '$Investment Size Min'
+            //         }
+            //       }
+            //     }, {
+            //       '$addFields': {
+            //         'Investment Size Max Double': {
+            //           '$toDouble': '$Investment Size Max'
+            //         }
+            //       }
+            //     }
+            //   ])
+            // investors.updateMany(
             //     // {'HQ': {$exists: false}},
             //     // {$set: {'HQ': ''}}
             //     {'HQ': ''},
@@ -59,10 +76,25 @@ export default class InvestorsDAO {
         // }
         if (filters) {
             query = {
-                "Type": filters["type"],
-                "Preferred Sectors": filters["industry"],
-                // "Preferred Investment Size": filters["investmentSize"],
-                "HQ": filters["location"]
+                    "Type": filters["type"],
+                    'Investment Size Min': filters["investmentSizeMin"],
+                    'Investment Size Max': filters["investmentSizeMax"],
+                    $and : [
+                        {$or: [
+                            {"Preferred Sectors": filters["industry"]},
+                            {"Preferred Sectors": {$exists: false}}
+                        ]},
+                    // "Preferred Investment Size": filters["investmentSize"],
+                    
+                        {$or: [
+                            {"HQ": filters["location"]},
+                            {"HQ": {$exists: false}}
+                        ]},
+                    ],
+                    // "HQ": filters["location"]
+                
+                    // 
+                
             }
 
             
@@ -78,6 +110,7 @@ export default class InvestorsDAO {
             // }
         }   
         console.log(filters)
+        console.log(query)
         // console.log(filters["location"])
         // console.log(filtersLocation)
         let cursor
@@ -130,7 +163,7 @@ export default class InvestorsDAO {
     static async getIndustry() {
         let industry = []
         try {
-            industry = await investors.distinct("Preferred Sectors")
+            industry = await investors.distinct("Distinct Sectors")
             return industry
         } catch(e) {
             console.error(`Unable to get industry, ${e}`)

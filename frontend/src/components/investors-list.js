@@ -20,6 +20,8 @@ function InvestorsList () {
     const [investorDescription, setInvestorDescription] = useState(" ");
     const [investorSectors, setInvestorSectors] = useState(" ");
     const [investorInvestment, setInvestorInvestment] = useState(" ");
+    const [investorInvestmentMin, setInvestorInvestmentMin] = useState(" ");
+    const [investorInvestmentMax, setInvestorInvestmentMax] = useState(" ");
 
     
     useEffect(() => {
@@ -133,15 +135,17 @@ function InvestorsList () {
     };
 
     const retrieveInvestmentSize = () => {
-        InvestorDataService.getInvestmentSize()
-        .then(response => {
-            console.log(response.data);
-            setInvestmentSize(["All Investment Sizes"].concat(response.data));
+        // InvestorDataService.getInvestmentSize()
+        // .then(response => {
+        //     console.log(response.data);
+        //     setInvestmentSize(["All Investment Sizes"].concat(response.data));
             
-        })
-        .catch(e => {
-            console.log(e);
-        });
+        // })
+        // .catch(e => {
+        //     console.log(e);
+        // });
+        let investmentSizeArr = ["Under $1M", "$1M to $10M", "$10M to $100M","Above $100M"];
+        setInvestmentSize(["All Investment Sizes"].concat(investmentSizeArr));
     };
 
     const refreshList = () => {
@@ -192,9 +196,10 @@ function InvestorsList () {
     };
 
     const findByMultiple = (query, by) => {
-        query = [searchType, searchLocation, searchIndustry]
-        by = ["type", "location", "industry"]
-        if (searchType == "All Types" && searchLocation == "All Locations" && searchIndustry == "All Industries") {
+        query = [searchType, searchLocation, searchIndustry, searchInvestmentSize]
+        by = ["type", "location", "industry", "investmentSize"]
+        if (searchType == "All Types" && searchLocation == "All Locations" 
+        && searchIndustry == "All Industries" && searchInvestmentSize == "All Investment Sizes") {
             refreshList();
         } else {
             InvestorDataService.findMultiple(query, by)
@@ -253,12 +258,14 @@ function InvestorsList () {
                   Description: {investorDescription}{"\n"}
                   Preferred Sectors: {investorSectors}{"\n"}
                   Preferred Investment Size: {investorInvestment}{"\n"}
+                  {/* Preferred Investment Size: ${investorInvestmentMin}M - ${investorInvestmentMax}M{"\n"} */}
+                  
 
               </div>
               <div className="footer">
                 <button
                   onClick={() => {
-                    setOpenModal(false);
+                    setModalOpen(false);
                   }}
                   id="cancelBtn"
                 >
@@ -276,7 +283,7 @@ function InvestorsList () {
         <div>
 
             <div className="row pb-1">
-            <div className="input-group col-lg">
+            {/* <div className="input-group col-lg"> */}
                 {/* <input
                     type="text"
                     className="form-control"
@@ -284,16 +291,8 @@ function InvestorsList () {
                     value={searchLocation}
                     // onChange={onChangeSearchLocation}
                 /> */}
-                <div className="input-group-append">
-                    <button
-                        className="btn btn-outline-secondary"
-                        type="button"
-                        onClick={findByMultiple}
-                    >
-                    Search
-                    </button>
-                </div>
-                </div>
+                
+                {/* </div> */}
 
             <div className="input-group col-lg">
                 <select onChange={onChangeSearchType}>
@@ -303,9 +302,9 @@ function InvestorsList () {
                         )
                     })}
                 </select>
-                </div>
+            </div>
 
-                <div className="input-group col-lg">
+            <div className="input-group col-lg">
                 <select onChange={onChangeSearchLocation}>
                     {locations.map(location => {
                         return (
@@ -313,7 +312,7 @@ function InvestorsList () {
                     )
                     })}
                 </select>
-                </div>
+            </div>
 
             <div className="input-group col-lg">
                 <select onChange={onChangeSearchIndustry}>
@@ -344,6 +343,16 @@ function InvestorsList () {
                 </div> */}
             </div>
 
+            <div className="input-group col-lg">
+                    <button
+                        className="btn btn-outline-secondary"
+                        type="button"
+                        onClick={findByMultiple}
+                    >
+                    Search
+                    </button>
+            </div>
+
             {/* <div className="input-group col-lg">
               <select onChange={onChangeSearchType}>
                  {types.map(type => {
@@ -372,7 +381,7 @@ function InvestorsList () {
 
             </div>
 
-            <div className="input-group col-lg">
+            {/* <div className="input-group col-lg">
             <input 
                 id="typeinp" 
                 type="range" 
@@ -380,7 +389,7 @@ function InvestorsList () {
                 // value={this.state.value} 
                 // onChange={this.handleChange}
                 step="1"/>
-            </div>
+            </div> */}
 
             
             <div className="row">
@@ -402,6 +411,8 @@ function InvestorsList () {
                                 setInvestorDescription(investor.Description)
                                 setInvestorSectors(investor["Preferred Sectors"])
                                 setInvestorInvestment(investor["Preferred Investment Size"])
+                                // setInvestorInvestmentMin(investor["Investment Size Min"])
+                                // setInvestorInvestmentMax(investor["Investment Size Max"])
                                 setModalOpen(true)
                                 Modal(modalOpen)
 

@@ -29,18 +29,18 @@ export default class InvestorsController {
         }
         if (req.query.industry) {
             if (req.query.industry != "All Industries") {
-                filters.industry = req.query.industry
+                filters.industry = {$regex: req.query.industry, $options: 'i'}
             } else {
                 filters.industry = {$regex: ""}
             }
         } else {
             filters.industry = {$regex: ""}
         }
-        // if (req.query.investmentSize != "All Investment Sizes") {
-        //     filters.investmentSize = req.query.investmentSize
-        // } else {
-        //     filters.investmentSize = {$regex: ""}
-        // }
+        if (req.query.investmentSize != "All Investment Sizes") {
+            filters.investmentSize = req.query.investmentSize
+        } else {
+            filters.investmentSize = {$regex: ""}
+        }
         if (req.query.location) {
             if (req.query.location != "All Locations") {
                 filters.location = req.query.location
@@ -49,6 +49,27 @@ export default class InvestorsController {
             }
         } else {
             filters.location = {$regex: ""}
+        }
+        if (req.query.investmentSize) {
+            if (req.query.investmentSize != "All Investment Size") {
+                if (req.query.investmentSize == "Under $1M") {
+                    filters.investmentSizeMin = {$gte: 0}
+                    filters.investmentSizeMax = {$lte: 1}
+                } else if (req.query.investmentSize == "$1M to $10M") {
+                    filters.investmentSizeMin = {$lte: 10}
+                    filters.investmentSizeMax = {$gte: 1}
+                } else if (req.query.investmentSize == "$10M to $100M") {
+                    filters.investmentSizeMin = {$lte: 100}
+                    filters.investmentSizeMax = {$gte: 10}
+                } else if (req.query.investmentSize == "Above $100M") {
+                    filters.investmentSizeMin = {$gte: 0}
+                    filters.investmentSizeMax = {$gte: 100}
+                }
+                // ["Under $1M", "$1M to $10M", "$10M to $100M","Above $100M"]
+            } else {
+                filters.investmentSizeMin = {$regex: ""}
+                filters.investmentSizeMax = {$regex: ""}
+            }
         }
 
         const { investorsList, totalNumInvestors } = await InvestorsDAO.getInvestors({
