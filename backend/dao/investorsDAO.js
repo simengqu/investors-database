@@ -7,6 +7,7 @@ export default class InvestorsDAO {
         }
         try {
             investors = await conn.db(process.env.INVESTORS_NS).collection("investors")
+            // investors.createIndex( { "$**": "text" } )
             // investors.updateMany(
             //     { },
             //     [
@@ -75,7 +76,8 @@ export default class InvestorsDAO {
         //     filtersInvestment = "Preferred Investment Size"
         // }
         if (filters) {
-            query = {
+            if (filters["text"] == "") {
+                query = {
                     "Type": filters["type"],
                     'Investment Size Min': filters["investmentSizeMin"],
                     'Investment Size Max': filters["investmentSizeMax"],
@@ -84,18 +86,31 @@ export default class InvestorsDAO {
                             {"Preferred Sectors": filters["industry"]},
                             {"Preferred Sectors": {$exists: false}}
                         ]},
-                    // "Preferred Investment Size": filters["investmentSize"],
-                    
                         {$or: [
                             {"HQ": filters["location"]},
                             {"HQ": {$exists: false}}
                         ]},
                     ],
-                    // "HQ": filters["location"]
-                
-                    // 
-                
+                }
+            } else {
+                query = {
+                    "Type": filters["type"],
+                    'Investment Size Min': filters["investmentSizeMin"],
+                    'Investment Size Max': filters["investmentSizeMax"],
+                    $text: {'$search': filters["text"]},
+                    $and : [
+                        {$or: [
+                            {"Preferred Sectors": filters["industry"]},
+                            {"Preferred Sectors": {$exists: false}}
+                        ]},
+                        {$or: [
+                            {"HQ": filters["location"]},
+                            {"HQ": {$exists: false}}
+                        ]},
+                    ],
+                }
             }
+            
 
             
             // console.log(query)

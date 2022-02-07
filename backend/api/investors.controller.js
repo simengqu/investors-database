@@ -71,6 +71,16 @@ export default class InvestorsController {
                 filters.investmentSizeMax = {$regex: ""}
             }
         }
+        if (req.query.text) {
+                const searchTextNoSpaces = req.query.text.replace(/\s+/g, '')
+                if (searchTextNoSpaces.length == 0) {
+                    filters.text = ""
+                } else {
+                    filters.text = req.query.text
+                }
+        } else {
+            filters.text = ""
+        }
 
         const { investorsList, totalNumInvestors } = await InvestorsDAO.getInvestors({
             filters,

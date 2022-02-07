@@ -25,10 +25,7 @@ function InvestorsList () {
     const [pageCount, setPageCount] = useState(0);
     const [pageNumber, setPageNumber] = useState(0);
     const [investorsCount, setInvestorsCount] = useState(0);
-
-    const changePage = ({ selected }) => {
-        setPageNumber(selected);
-    };
+    const [searchText, setSearchText ] = useState("");
     
     useEffect(() => {
         console.log("\n\n\\useEffect\n\n\n")
@@ -42,16 +39,37 @@ function InvestorsList () {
     useEffect( () => {
         console.log(searchType)
         findByMultiple();
-    }, [searchType, searchLocation, searchIndustry, searchInvestmentSize, investorsCount, pageCount, pageNumber])
+    }, [searchType, searchLocation, searchIndustry, searchInvestmentSize, 
+        investorsCount, pageCount, pageNumber])
+
+    useEffect( () => {
+        const timeOutId = setTimeout(() => {
+            setSearchText(searchText)
+            findByMultiple();
+        }, 500);
+        return () => clearTimeout(timeOutId);
+    }, [searchText])
     
     const onChangePage = ({ selected }) => {
         setPageNumber(selected);
         console.log("page number\n"+pageNumber)
     }
 
+    const onChangeSearchText = e => {
+        const searchText = e.target.value;
+        setSearchText(searchText);
+        
+    };
+
     const onChangeSearchType = e => {
         const searchType = e.target.value;
-        setSearchType(searchType);
+        if(e.target.value.length) {
+            setSearchType(searchType);
+            
+        } else {
+            setSearchType("search...");
+        }
+        
         // findByMultiple();
     };
 
@@ -207,14 +225,30 @@ function InvestorsList () {
     };
 
     const findByMultiple = (query, by, page) => {
-        query = [searchType, searchLocation, searchIndustry, searchInvestmentSize]
-        by = ["type", "location", "industry", "investmentSize"]
+        console.log("search text"+searchText.length+"end")
+        query = [searchType, searchLocation, searchIndustry, searchInvestmentSize, searchText]
+        by = ["type", "location", "industry", "investmentSize", "text"]
         page = pageNumber
-        if (searchType == "All Types" && searchLocation == "All Locations" 
-        && searchIndustry == "All Industries" && searchInvestmentSize == "All Investment Sizes") {
-            refreshList();
-        } else {
-            InvestorDataService.findMultiple(query, by, page)
+        const searchTextNoSpaces = searchText.replace(/\s+/g, '')
+        // if (searchType == "All Types" && searchLocation == "All Locations" 
+        // && searchIndustry == "All Industries" && searchInvestmentSize == "All Investment Sizes"
+        // ) {
+        //     refreshList();
+        // } else {
+        //     InvestorDataService.findMultiple(query, by, page)
+        //     .then(response => {
+        //         console.log(response.data);
+        //         setInvestorsCount(response.data.total_results)
+        //         setPageCount(Math.ceil(response.data.total_results / response.data.entries_per_page))
+        //         console.log("number of investors\n"+response.data.total_results+" "+investorsCount)
+        //         console.log(pageCount)
+        //         setInvestors(response.data.investors);
+        //     })
+        //     .catch(e => {
+        //         console.log(e);
+        //     });
+        // }
+        InvestorDataService.findMultiple(query, by, page)
             .then(response => {
                 console.log(response.data);
                 setInvestorsCount(response.data.total_results)
@@ -226,7 +260,6 @@ function InvestorsList () {
             .catch(e => {
                 console.log(e);
             });
-        }
         
     }
 
@@ -298,16 +331,16 @@ function InvestorsList () {
         <div>
 
             <div className="row pb-1">
-            {/* <div className="input-group col-lg"> */}
-                {/* <input
+            <div className="input-group col-lg">
+                <input
                     type="text"
                     className="form-control"
-                    placeholder="Search by location"
-                    value={searchLocation}
-                    // onChange={onChangeSearchLocation}
-                /> */}
+                    placeholder="search..."
+                    value={searchText}
+                    onChange={onChangeSearchText}
+                />
                 
-                {/* </div> */}
+                </div>
 
             <div className="input-group col-lg">
                 <select onChange={onChangeSearchType}>
