@@ -283,45 +283,47 @@ function InvestorsList () {
 
     const Modal = ({ setOpenModal }) => {
         return (
-          <div className="modalBackground">
-            <div className="modalContainer">
-              <div className="titleCloseBtn">
-                <button
-                  onClick={() => {
-                    setModalOpen(false);
-                  }}
-                >
-                  X
-                </button>
-              </div>
-              <div className="title">
-                <h1>Overview</h1>
-                {/* Investor Name: {investor.Firm}<br/> */}
-              </div>
-              <div className="body">
-                  Company name: {investorFirm}{"\n"}
-                  Title: {investorTitle}{"\n"}
-                  Type: {investorType}{"\n"}
-                  Location: {investorLocation}{"\n"}
-                  Description: {investorDescription}{"\n"}
-                  Preferred Sectors: {investorSectors}{"\n"}
-                  Preferred Investment Size: {investorInvestment}{"\n"}
-                  {/* Preferred Investment Size: ${investorInvestmentMin}M - ${investorInvestmentMax}M{"\n"} */}
-                  
+            <div className="modalBackground">
+                <div className="modalContainer">
+                    <div className="titleCloseBtn">
+                        <button
+                            onClick={() => {
+                                setModalOpen(false);
+                            }}
+                        >
+                        X
+                        </button>
+                    </div>
 
-              </div>
-              <div className="footer">
-                <button
-                  onClick={() => {
-                    setModalOpen(false);
-                  }}
-                  id="cancelBtn"
-                >
-                  Cancel
-                </button>
-              </div>
+                    <div className="title">
+                        <h1>Overview</h1>
+                        {/* Investor Name: {investor.Firm}<br/> */}
+                    </div>
+
+                    <div className="body">
+                        Company name: {investorFirm}{"\n"}
+                        Title: {investorTitle}{"\n"}
+                        Type: {investorType}{"\n"}
+                        Location: {investorLocation}{"\n"}
+                        Description: {investorDescription}{"\n"}
+                        Preferred Sectors: {investorSectors}{"\n"}
+                        Preferred Investment Size: {investorInvestment}{"\n"}
+                        {/* Preferred Investment Size: ${investorInvestmentMin}M - ${investorInvestmentMax}M{"\n"} */}
+                    </div>
+
+                    <div className="footer">
+                        <button
+                            onClick={() => {
+                                setModalOpen(false);
+                            }}
+                            id="cancelBtn"
+                        >
+                        Cancel
+                        </button>
+                    </div>
+                    
+                </div>
             </div>
-          </div>
         );
       }
 
@@ -487,23 +489,23 @@ function InvestorsList () {
 
 
 
-        {/* {modalOpen && <Modal setOpenModal={setModalOpen} />} */}
-        {modalOpen && Modal(modalOpen)}
+            {/* {modalOpen && <Modal setOpenModal={setModalOpen} />} */}
+            {modalOpen && Modal(modalOpen)}
 
 
-    <div className="App">
-      <ReactPaginate
-        previousLabel={"Previous"}
-        nextLabel={"Next"}
-        pageCount={pageCount}
-        onPageChange={onChangePage}
-        containerClassName={"paginationBttns"}
-        previousLinkClassName={"previousBttn"}
-        nextLinkClassName={"nextBttn"}
-        disabledClassName={"paginationDisabled"}
-        activeClassName={"paginationActive"}
-      />
-    </div>
+            <div className="App">
+            <ReactPaginate
+                previousLabel={"Previous"}
+                nextLabel={"Next"}
+                pageCount={pageCount}
+                onPageChange={onChangePage}
+                containerClassName={"paginationBttns"}
+                previousLinkClassName={"previousBttn"}
+                nextLinkClassName={"nextBttn"}
+                disabledClassName={"paginationDisabled"}
+                activeClassName={"paginationActive"}
+            />
+            </div>
 
         </div>
         
