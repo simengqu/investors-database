@@ -1,5 +1,57 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap");
 .App {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100vw;
+}
+
+.user {
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: #b3e3ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 500px;
+  height: 300px;
+  margin: 20px;
+}
+
+.paginationBttns {
+  width: 80%;
+  height: 40px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+.paginationBttns a {
+  padding: 10px;
+  margin: 8px;
+  border-radius: 5px;
+  border: 1px solid #2b2eff;
+  color: #2b2eff;
+  cursor: pointer;
+}
+
+.paginationBttns a:hover {
+  color: white;
+  background-color: #2b2eff;
+}
+
+.paginationActive a {
+  color: white;
+  background-color: #2b2eff;
+}
+
+.paginationDisabled a {
+  color: grey;
+  background-color: grey;
+}
+/* .App {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -20,7 +72,7 @@
 body {
   padding: 0;
   margin: 0;
-}
+} */
 /* .App {
   text-align: center;
 }

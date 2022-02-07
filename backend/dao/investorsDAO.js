@@ -127,13 +127,14 @@ export default class InvestorsDAO {
         try {
             const investorsList = await displayCursor.toArray()
             const totalNumInvestors = await investors.countDocuments(query)
-
-            return { investorsList, totalNumInvestors }
+            // const totalNumPages = Math.ceil(totalNumInvestors / investorsPerPage)
+            console.log(totalNumInvestors)
+            return { investorsList, totalNumInvestors, investorsPerPage }
         } catch (e) {
             console.error(
                 `Unable to convert cursor to array or problem counting documents, ${e}`,
             )
-            return { investorsList: [], totalNumInvestors: 0 }
+            return { investorsList: [], totalNumInvestors: 0, investorsPerPage: 20 }
         }
     }
 

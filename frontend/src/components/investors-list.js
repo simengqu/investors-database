@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Component, Fragment } from "react";
 import InvestorDataService from "../services/investor";
 import "./Modal.css";
+import "../App.css";
+import ReactPaginate from "react-paginate";
 
 function InvestorsList () {
     const [investors, setInvestors] = useState([]);
@@ -20,9 +22,13 @@ function InvestorsList () {
     const [investorDescription, setInvestorDescription] = useState(" ");
     const [investorSectors, setInvestorSectors] = useState(" ");
     const [investorInvestment, setInvestorInvestment] = useState(" ");
-    const [investorInvestmentMin, setInvestorInvestmentMin] = useState(" ");
-    const [investorInvestmentMax, setInvestorInvestmentMax] = useState(" ");
+    const [pageCount, setPageCount] = useState(0);
+    const [pageNumber, setPageNumber] = useState(0);
+    const [investorsCount, setInvestorsCount] = useState(0);
 
+    const changePage = ({ selected }) => {
+        setPageNumber(selected);
+    };
     
     useEffect(() => {
         console.log("\n\n\\useEffect\n\n\n")
@@ -36,18 +42,23 @@ function InvestorsList () {
     useEffect( () => {
         console.log(searchType)
         findByMultiple();
-    }, [searchType])
+    }, [searchType, searchLocation, searchIndustry, searchInvestmentSize, investorsCount, pageCount, pageNumber])
     
+    const onChangePage = ({ selected }) => {
+        setPageNumber(selected);
+        console.log("page number\n"+pageNumber)
+    }
+
     const onChangeSearchType = e => {
         const searchType = e.target.value;
         setSearchType(searchType);
         // findByMultiple();
     };
 
-    useEffect( () => {
-        console.log(searchLocation)
-        findByMultiple();
-    }, [searchLocation])
+    // useEffect( () => {
+    //     console.log(searchLocation)
+    //     findByMultiple();
+    // }, [searchLocation])
 
     const onChangeSearchLocation = e => {
         const searchLocation = e.target.value;
@@ -61,10 +72,10 @@ function InvestorsList () {
         // }
     };
 
-    useEffect( () => {
-        console.log(searchIndustry)
-        findByMultiple();
-    }, [searchIndustry])
+    // useEffect( () => {
+    //     console.log(searchIndustry)
+    //     findByMultiple();
+    // }, [searchIndustry])
 
     const onChangeSearchIndustry = e => {
         const searchIndustry = e.target.value;
@@ -72,10 +83,10 @@ function InvestorsList () {
         // findByMultiple();
     };
 
-    useEffect( () => {
-        console.log(searchInvestmentSize)
-        findByMultiple();
-    }, [searchInvestmentSize])
+    // useEffect( () => {
+    //     console.log(searchInvestmentSize)
+    //     findByMultiple();
+    // }, [searchInvestmentSize])
 
     const onChangeSearchInvestmentSize = e => {
         const searchInvestmentSize = e.target.value;
@@ -195,16 +206,21 @@ function InvestorsList () {
         }
     };
 
-    const findByMultiple = (query, by) => {
+    const findByMultiple = (query, by, page) => {
         query = [searchType, searchLocation, searchIndustry, searchInvestmentSize]
         by = ["type", "location", "industry", "investmentSize"]
+        page = pageNumber
         if (searchType == "All Types" && searchLocation == "All Locations" 
         && searchIndustry == "All Industries" && searchInvestmentSize == "All Investment Sizes") {
             refreshList();
         } else {
-            InvestorDataService.findMultiple(query, by)
+            InvestorDataService.findMultiple(query, by, page)
             .then(response => {
                 console.log(response.data);
+                setInvestorsCount(response.data.total_results)
+                setPageCount(Math.ceil(response.data.total_results / response.data.entries_per_page))
+                console.log("number of investors\n"+response.data.total_results+" "+investorsCount)
+                console.log(pageCount)
                 setInvestors(response.data.investors);
             })
             .catch(e => {
@@ -212,10 +228,9 @@ function InvestorsList () {
             });
         }
         
-        console.log(searchLocation)
-        // findMultiple([searchType, searchLocation, searchIndustry], 
-        //         ["type", "location", "industry"])
     }
+
+
 
     // const findMultiple = (query, by) => {
     //     InvestorDataService.findMultiple(query, by)
@@ -443,6 +458,19 @@ function InvestorsList () {
         {modalOpen && Modal(modalOpen)}
 
 
+    <div className="App">
+      <ReactPaginate
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
+        pageCount={pageCount}
+        onPageChange={onChangePage}
+        containerClassName={"paginationBttns"}
+        previousLinkClassName={"previousBttn"}
+        nextLinkClassName={"nextBttn"}
+        disabledClassName={"paginationDisabled"}
+        activeClassName={"paginationActive"}
+      />
+    </div>
 
         </div>
         
