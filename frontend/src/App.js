@@ -5,6 +5,7 @@ import Modal from "./components/Modal";
 import InvestorsList from "./components/investors-list";
 import Example from "./components/Example";
 import Login from "./components/login";
+import Register from "./components/register";
 
 function App() {
   // const [modalOpen, setModalOpen] = useState(false);
@@ -24,7 +25,8 @@ function App() {
 
       {modalOpen && <Modal setOpenModal={setModalOpen} />} */}
 
-      {/* <Login></Login> */}
+      <Login></Login>
+      <Register></Register>
       <InvestorsList></InvestorsList>
     </div>
     
