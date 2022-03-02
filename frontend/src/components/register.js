@@ -30,8 +30,42 @@ import {
     Row,
     Col,
   } from "reactstrap";
+
+  import React, { useState, useEffect} from "react";
   
   const Register = () => {
+    const [userEmail, setUserEmail] = useState([]);
+    const [userPassword, setUserPassword] = useState([]);
+
+    // useEffect(() => {
+    //     console.log("\n\n\\useEffect\n\n\n")
+    //     onChangeEmail();
+    //     onChangePassword();
+    // }, [userEmail, userPassword]);
+
+    const onClickGetInfo = () => {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        document.regis
+        setUserPassword(password);
+        console.log("onclick get info")
+        console.log(email)
+        console.log(password)
+    }
+    const onChangeEmail = () => {
+        const email = document.getElementById("email").value;
+        setUserEmail(email);
+        console.log("on change email")
+        console.log(email)
+    }
+
+    const onChangePassword = () => {
+        const password = document.getElementById("password").value;
+        setUserPassword(password);
+        console.log("on change password")
+        console.log(password)
+    }
+
     return (
       <>
         <Col lg="6" md="8">
@@ -89,7 +123,7 @@ import {
                         <i className="ni ni-hat-3" />
                       </InputGroupText>
                     </InputGroup>
-                    <Input placeholder="Name" type="text" />
+                    <Input placeholder="Name" type="text" value />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -101,8 +135,11 @@ import {
                     </InputGroup>
                     <Input
                       placeholder="Email"
-                      type="email"
+                      type="text"
                       autoComplete="new-email"
+                      id="email"
+                    //   value={userEmail}
+                    //   onChange={onChangeEmail}
                     />
                   </InputGroup>
                 </FormGroup>
@@ -117,6 +154,7 @@ import {
                       placeholder="Password"
                       type="password"
                       autoComplete="new-password"
+                      id="password"
                     />
                   </InputGroup>
                 </FormGroup>
@@ -149,7 +187,7 @@ import {
                   </Col>
                 </Row>
                 <div className="text-center">
-                  <Button className="mt-4" color="primary" type="button">
+                  <Button className="mt-4" color="primary" type="button" onClick={onClickGetInfo}>
                     Create account
                   </Button>
                 </div>
