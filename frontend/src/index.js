@@ -6,6 +6,7 @@ import {BrowserRouter, Switch, Redirect, Route} from "react-router-dom";
 ReactDOM.render(
   // <BrowserRouter>
   <React.StrictMode>
+    {/* <registerLogin /> */}
     <App />
   </React.StrictMode>,
 //   <BrowserRouter>
